@@ -8,65 +8,32 @@ public class SinglyLinkedList<E> implements List<E> {
 
     private static class Node<E> {
 
-        private final E element;            // reference to the element stored at this node
+        private final E element;            
+        private Node<E> next;
 
-        /**
-         * A reference to the subsequent node in the list
-         */
-        private Node<E> next;         // reference to the subsequent node in the list
-
-        /**
-         * Creates a node with the given element and next node.
-         *
-         * @param e the element to be stored
-         * @param n reference to a node that should follow the new node
-         */
         public Node(E e, Node<E> n) {
-            // TODO
+            this.next = n;
+            this.element = e;
         }
 
         // Accessor methods
 
-        /**
-         * Returns the element stored at the node.
-         *
-         * @return the element stored at the node
-         */
         public E getElement() {
-            return null;
+            return element;
         }
 
-        /**
-         * Returns the node that follows this one (or null if no such node).
-         *
-         * @return the following node
-         */
         public Node<E> getNext() {
-            // TODO
-            return null;
+            return next;
         }
 
         // Modifier methods
 
-        /**
-         * Sets the node's next reference to point to Node n.
-         *
-         * @param n the node that should follow this one
-         */
         public void setNext(Node<E> n) {
-            // TODO
+            next = n;
         }
     } //----------- end of nested Node class -----------
 
-    /**
-     * The head node of the list
-     */
     private Node<E> head = null;               // head node of the list (or null if empty)
-
-
-    /**
-     * Number of nodes in the list
-     */
     private int size = 0;                      // number of nodes in the list
 
     public SinglyLinkedList() {
@@ -74,54 +41,109 @@ public class SinglyLinkedList<E> implements List<E> {
 
     //@Override
     public int size() {
-        // TODO
-        return 0;
+        return size;
     }
 
     //@Override
     public boolean isEmpty() {
-        // TODO
-        return false;
+        if (head == null) {
+            return true;
+        } else return false;
     }
 
     @Override
     public E get(int position) {
-        // TODO
-        return null;
+        Node<E> target = head;
+        int counter = 0;
+        
+        while (counter < position) {
+            target = target.getNext();
+            counter++;
+        }
+
+        return target.getElement();
     }
 
     @Override
     public void add(int position, E e) {
-        // TODO
-    }
+        Node<E> newest = new Node<E>(e, null);
+        Node<E> last = head;
+        int counter = 0;
 
+        while(counter > position - 1) {
+            last = last.getNext();
+            counter++;
+        }
+
+        newest.setNext(last.getNext());
+        last.setNext(newest);
+        size++;
+    }
 
     @Override
     public void addFirst(E e) {
-        // TODO
+        head = new Node<E>(e, head);
+        size++;
     }
 
     @Override
     public void addLast(E e) {
-        // TODO
+        Node<E> newest = new Node<E>(e, null);
+        Node<E> last = head;
+        if(last == null) {
+            head = newest;
+        }
+
+        else {
+            while (last.getNext() != null) { 
+                last = last.getNext();
+            }
+
+            last.setNext(newest);
+        }
+
+        size++;
     }
 
     @Override
     public E remove(int position) {
-        // TODO
-        return null;
+        Node<E> last = head;
+        Node<E> removed = null;
+        int counter = 0;
+
+        while(counter > position - 1) {
+            last = last.getNext();
+            counter++;
+        }
+
+        removed = last.getNext();
+        last.setNext(removed.getNext());
+        removed.setNext(null);
+
+        size--;
+        return removed.getElement();
     }
 
     @Override
     public E removeFirst() {
-        // TODO
-        return null;
+        Node<E> removed = head;
+        head = head.getNext();
+
+        return removed.getElement();
     }
 
     @Override
     public E removeLast() {
-        // TODO
-        return null;
+        Node<E> removed = null;
+        Node<E> last = head;
+        while (last.getNext() != null) {
+            last = last.getNext(); 
+        }
+
+        removed = last.getNext();
+        last.setNext(null);
+
+        return removed.getElement();
     }
 
     //@Override
