@@ -46,9 +46,7 @@ public class SinglyLinkedList<E> implements List<E> {
 
     //@Override
     public boolean isEmpty() {
-        if (head == null) {
-            return true;
-        } else return false;
+        return size == 0;
     }
 
     @Override
