@@ -71,7 +71,7 @@ public class DoublyLinkedList<E> implements List<E> {
         Node<E> target = head;
         int counter = 0;
         
-        while (counter < i) {
+        while (counter < i + 1) {
             target = target.getNext();
             counter++;
         }
@@ -86,7 +86,7 @@ public class DoublyLinkedList<E> implements List<E> {
         Node<E> last = head;
         int counter = 0;
 
-        while(counter > i - 1) {
+        while(counter < i) {
             last = last.getNext();
             counter++;
         }
@@ -98,11 +98,11 @@ public class DoublyLinkedList<E> implements List<E> {
 
     @Override
     public E remove(int i) {
-        Node<E> last = head;
+        Node<E> last = head.getNext();
         Node<E> removed = null;
         int counter = 0;
 
-        while(counter > i - 1) {
+        while(counter > i + 1) {
             last = last.getNext();
             counter++;
         }
@@ -161,11 +161,20 @@ public class DoublyLinkedList<E> implements List<E> {
 
     @Override
     public E removeFirst() {
-        return head.next.getData();
+        Node<E> removed = head.next;
+        head.setNext(removed.next);
+        removed.next.setPrev(head);
+        removed.setNext(null);
+        removed.setPrev(null);
+
+        size--;
+        return removed.getData();
     }
 
     @Override
     public E removeLast() {
+
+
         return tail.prev.getData();
     }
 

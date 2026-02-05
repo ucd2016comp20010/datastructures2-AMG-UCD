@@ -106,15 +106,14 @@ public class SinglyLinkedList<E> implements List<E> {
     @Override
     public E remove(int position) {
         Node<E> last = head;
-        Node<E> removed = null;
         int counter = 0;
 
-        while(counter > position - 1) {
+        while(counter < position - 1) {
             last = last.getNext();
             counter++;
         }
 
-        removed = last.getNext();
+        Node<E> removed = last.getNext();
         last.setNext(removed.getNext());
         removed.setNext(null);
 
@@ -124,24 +123,42 @@ public class SinglyLinkedList<E> implements List<E> {
 
     @Override
     public E removeFirst() {
-        Node<E> removed = head;
-        head = head.getNext();
 
-        return removed.getElement();
+        if (head == null) {
+            return null;
+        }
+
+        else {
+            Node<E> removed = head;
+            head = head.getNext();
+            size--;
+            return removed.getElement();
+        }
     }
 
     @Override
     public E removeLast() {
-        Node<E> removed = null;
-        Node<E> last = head;
-        while (last.getNext() != null) {
-            last = last.getNext(); 
+
+        Node<E> start = head;
+
+    if (start.getNext() != null) {
+        while (start.getNext().getNext() != null) {
+            start = start.getNext();
         }
 
-        removed = last.getNext();
-        last.setNext(null);
+        Node<E> removed = start.getNext();
+        start.setNext(null);
+        removed.setNext(null);
+        size--;
 
         return removed.getElement();
+        }
+
+        else {
+            head = null;
+            size--;
+            return start.getElement();
+        }
     }
 
     //@Override
