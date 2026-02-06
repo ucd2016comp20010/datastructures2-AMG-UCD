@@ -59,8 +59,9 @@ class LinkedDequeTest {
     void testRemoveLast() {
         Deque<Integer> s = new LinkedDeque<>();
 
-        for (int i = 0; i < 10; ++i)
+        for (int i = 0; i < 10; ++i) {
             s.addFirst(i);
+        }
         s.removeLast();
         assertEquals("[9, 8, 7, 6, 5, 4, 3, 2, 1]", s.toString());
     }

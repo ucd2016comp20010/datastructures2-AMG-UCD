@@ -12,7 +12,14 @@ public class LinkedDeque<E> implements Deque<E> {
     }
 
     public static void main(String[] args) {
-        // TODO Auto-generated method stub
+        Deque<Integer> s = new LinkedDeque<>();
+
+        for (int i = 0; i < 10; ++i) {
+            s.addFirst(i);
+        }
+        System.out.println(s);
+        s.removeLast();
+        System.out.println(s);
 
     }
 

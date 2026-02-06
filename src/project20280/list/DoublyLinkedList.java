@@ -173,9 +173,14 @@ public class DoublyLinkedList<E> implements List<E> {
 
     @Override
     public E removeLast() {
+        Node<E> removed = tail.prev;
+        tail.setPrev(removed.prev);
+        removed.prev.setNext(tail);
+        removed.setNext(null);
+        removed.setPrev(null);
 
-
-        return tail.prev.getData();
+        size--;
+        return removed.getData();
     }
 
     @Override
