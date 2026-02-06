@@ -10,7 +10,7 @@ In what situations would you prefer to use a linked list to an array?
 
 Q8:
 Describe 2 possible use-cases for a circularly linked list (2-3 sentences for each).
-    -
+    -When you need to implement a cycling list of items that will eventually repeat on itself
 
-    -
+    -Useful when you need to compare 2 lists and are doing it in an itterative method, allowing the second list to continuously cycle over and over without needing to reset the current pointer to the head manually
 

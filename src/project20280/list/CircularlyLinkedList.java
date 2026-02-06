@@ -4,8 +4,6 @@ import project20280.interfaces.List;
 
 import java.util.Iterator;
 
-import org.junit.platform.engine.support.hierarchical.Node;
-
 public class CircularlyLinkedList<E> implements List<E> {
 
     private class Node<T> {

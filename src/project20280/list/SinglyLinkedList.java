@@ -4,7 +4,7 @@ import project20280.interfaces.List;
 
 import java.util.Iterator;
 
-public class SinglyLinkedList<E> implements List<E> {
+public class SinglyLinkedList<E extends Comparable<E>> implements List<E> {
 
     private static class Node<E> {
 
@@ -197,22 +197,96 @@ public class SinglyLinkedList<E> implements List<E> {
 
     public static void main(String[] args) {
         SinglyLinkedList<Integer> ll = new SinglyLinkedList<Integer>();
-        System.out.println("ll " + ll + " isEmpty: " + ll.isEmpty());
+        //System.out.println("ll " + ll + " isEmpty: " + ll.isEmpty());
         //LinkedList<Integer> ll = new LinkedList<Integer>();
+        SinglyLinkedList<Integer> l2 = new SinglyLinkedList<Integer>();
 
-        ll.addFirst(0);
-        ll.addFirst(1);
-        ll.addFirst(2);
-        ll.addFirst(3);
+
         ll.addFirst(4);
-        ll.addLast(-1);
+        ll.addFirst(2);
+        ll.addFirst(0);
+
+        l2.addFirst(5);
+        l2.addFirst(3);
+        l2.addFirst(1);
         //ll.removeLast();
         //ll.removeFirst();
         //System.out.println("I accept your apology");
         //ll.add(3, 2);
-        System.out.println(ll);
-        ll.remove(5);
-        System.out.println(ll);
+        //System.out.println(ll);
+        //ll.remove(5);
+        //System.out.println(ll);
+        SinglyLinkedList<Integer> result = ll.sortedMerged(l2);
+        System.out.println(result);
+        result.reverse();
+        System.out.println(result);
 
+    }
+
+    SinglyLinkedList<E> sortedMerged(SinglyLinkedList<E> b) {
+        SinglyLinkedList<E> merged = new SinglyLinkedList<E>();
+
+        Node<E> currA = head;
+        Node<E> currB = b.head;
+        Node<E> dummyNode = new Node<E>(null, null);
+        Node<E> temp = dummyNode;
+        
+
+        while (currA != null && currB != null) {
+            // Compare elements of both lists and
+            // link the smaller node to the merged list
+            if (currA.element.compareTo(currB.element) < 0) {
+                temp.next = currA;
+                currA = currA.next;
+            } else {
+                temp.next = currB;
+                currB = currB.next;
+            }
+            // Move the temporary pointer
+            // to the next node
+            temp = temp.next;
+        }
+
+        // If any list still has remaining
+        // elements, append them to the merged list
+        if (currA != null) {
+            temp.next = currA;
+        } else {
+            temp.next = currB;
+        }
+
+        merged.head = dummyNode.next;
+
+        return merged;
+    }
+
+    public void reverse() {
+
+        Node<E> prev = null;
+        Node<E> curr = head;
+        Node<E> changing = null;
+        Node<E> follow = head.next;
+
+        while (curr != null) {
+            changing = curr;
+            changing.setNext(prev);
+            prev = curr;
+            curr = follow;
+            
+            if (follow != null) {
+                follow = follow.next;
+            }
+        }
+        head = prev;
+    }
+
+    public SinglyLinkedList<E> copy() {
+        SinglyLinkedList<E> twin = new SinglyLinkedList<E>();
+        Node<E> tmp = head;
+        while (tmp != null) {
+            twin.addLast(tmp.getElement());
+            tmp = tmp.next;
+        }
+        return twin;
     }
 }
