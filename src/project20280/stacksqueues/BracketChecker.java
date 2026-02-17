@@ -50,7 +50,7 @@ class BracketChecker {
         };
 
         for (String input : inputs) {
-            boolean isBalanced = BracketChecker.checkParentheses(input);
+            boolean isBalanced = checkParentheses(input);
             System.out.println("isBalanced " + (isBalanced ? " yes! " :" no! ") + input);
         }
     }
