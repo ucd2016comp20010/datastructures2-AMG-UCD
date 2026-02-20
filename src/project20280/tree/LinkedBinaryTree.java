@@ -1,9 +1,14 @@
 package project20280.tree;
 
 import project20280.interfaces.Position;
+import project20280.stacksqueues.LinkedQueue;
 
 import java.util.ArrayList;
 //import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
+import java.util.HashMap;
+import java.util.Queue;
+
+import javax.swing.tree.TreeNode;
 
 import org.w3c.dom.NodeList;
 
@@ -61,6 +66,7 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
         String[] arr = { "A", "B", "C", "D", "E", null, "F", null, null, "G", "H", null, null, null, null };
         bt.createLevelOrder(arr);
         System.out.println(bt.toBinaryTreeString());
+        System.out.println(bt.height());
     }
 
 
@@ -306,4 +312,40 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
             return sb.toString();
         }
     }
+    /* 
+    public Node<E> buildTree(E[] preorder, E[] inorder) {
+        LinkedQueue<E> myQueue = new LinkedQueue<>() {
+            
+        };
+        for (int i = 0; i < inorder.length; i++) {
+            myQueue.enqueue(inorder[i]);
+        }
+
+        // Start the recursive construction
+        return build(preorder, 0, preorder.length - 1, inorder, 0, inorder.length - 1, myQueue);
+    }
+
+    // Helper method
+    private Node<E> build(E[] preorder, int preStart, int preEnd,
+                           E[] inorder, int inStart, int inEnd, LinkedQueue<E> queue) {
+        // Base condition
+        if (preStart > preEnd || inStart > inEnd) return null;
+
+        // First element of preorder is the root
+        Node<E> root = createNode(preorder[preStart], null, null, null);
+
+        // Get inorder index of root
+        int inRoot = queue.pop(root.element);
+        int numsLeft = inRoot - inStart;
+
+        // Build left and right subtrees
+        root.left = build(preorder, preStart + 1, preStart + numsLeft,
+                          inorder, inStart, inRoot - 1, queue);
+        root.right = build(preorder, preStart + numsLeft + 1, preEnd,
+                           inorder, inRoot + 1, inEnd, queue);
+
+        return root;
+    }
+    */
 }
+
