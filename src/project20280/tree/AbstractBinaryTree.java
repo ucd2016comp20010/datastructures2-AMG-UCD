@@ -45,15 +45,15 @@ public abstract class AbstractBinaryTree<E> extends AbstractTree<E>
 
     @Override
     public Iterable<Position<E>> children(Position<E> p) {
-        for (Position<E> curr : positions()) {
-             if (curr == p) {
+        //for (Position<E> curr : positions()) {
+             //if (curr == p) {
                 List<Position<E>> snapshot = new ArrayList<>(2);    // max capacity of 2
                 if (left(p) != null) snapshot.add(left(p));
                 if (right(p) != null) snapshot.add(right(p));
                 return snapshot;
-            }
-        }
-        throw new IllegalArgumentException();
+            //}
+        //}
+        //throw new IllegalArgumentException();
     }
 
     private void inorderSubtree(Position<E> p, List<Position<E>> snapshot) {

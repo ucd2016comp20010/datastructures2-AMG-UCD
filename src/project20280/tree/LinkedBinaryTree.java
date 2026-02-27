@@ -1,9 +1,10 @@
 package project20280.tree;
 
 import project20280.interfaces.Position;
-import project20280.stacksqueues.LinkedQueue;
+import project20280.stacksqueues.LinkedDeque;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 //import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import java.util.HashMap;
 import java.util.Queue;
@@ -67,26 +68,21 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
         bt.createLevelOrder(arr);
         System.out.println(bt.toBinaryTreeString());
         System.out.println(bt.height());
+        
+        Integer [] inorder= {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
+        18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30};
+        Integer [] preorder= {18, 2, 1, 14, 13, 12, 4, 3, 9, 6, 5, 8, 7, 10, 11, 15, 16,
+        17, 28, 23, 19, 22, 20, 21, 24, 27, 26, 25, 29, 30};
+
+        LinkedBinaryTree<Integer> bs = new LinkedBinaryTree <>();
+        bs.construct(inorder, preorder);
+        System.out.println(bs.toBinaryTreeString());
     }
 
-
-    /**
-     * Factory function to create a new node storing element e.
-     */
     protected Node<E> createNode(E e, Node<E> parent, Node<E> left, Node<E> right) {
         return new Node<E>(e, parent, left, right);
     }
 
-    /**
-     * Verifies that a Position belongs to the appropriate class, and is not one
-     * that has been previously removed. Note that our current implementation does
-     * not actually verify that the position belongs to this particular list
-     * instance.
-     *
-     * @param p a Position (that should belong to this tree)
-     * @return the underlying Node instance for the position
-     * @throws IllegalArgumentException if an invalid position is detected
-     */
     protected Node<E> validate(Position<E> p) throws IllegalArgumentException {
         if (!(p instanceof Node)) throw new IllegalArgumentException("Not valid position type");
         Node<E> node = (Node<E>) p; // safe cast
@@ -254,9 +250,6 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
         return btp.print();
     }
 
-    /**
-     * Nested static class for a binary tree node.
-     */
     public static class Node<E> implements Position<E> {
         private E element;
         private Node<E> left, right, parent;
@@ -312,40 +305,94 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
             return sb.toString();
         }
     }
-    /* 
-    public Node<E> buildTree(E[] preorder, E[] inorder) {
-        LinkedQueue<E> myQueue = new LinkedQueue<>() {
-            
-        };
-        for (int i = 0; i < inorder.length; i++) {
-            myQueue.enqueue(inorder[i]);
-        }
 
-        // Start the recursive construction
-        return build(preorder, 0, preorder.length - 1, inorder, 0, inorder.length - 1, myQueue);
+
+
+    static int maxDiameter = 0;
+
+    int diameterRecur(Node<E> root) {
+        if (root == null)
+            return 0;
+
+        int lHeight = diameterRecur(root.left);
+        int rHeight = diameterRecur(root.right);
+
+        if (lHeight + rHeight > maxDiameter) {
+            maxDiameter = lHeight + rHeight;
+            }
+        return 1 + Math.max(lHeight, rHeight);
     }
 
-    // Helper method
-    private Node<E> build(E[] preorder, int preStart, int preEnd,
-                           E[] inorder, int inStart, int inEnd, LinkedQueue<E> queue) {
-        // Base condition
-        if (preStart > preEnd || inStart > inEnd) return null;
+    int diameter(Node<E> root) {
+        maxDiameter = 0; 
+        diameterRecur(root);
+        return maxDiameter;
+    }
 
-        // First element of preorder is the root
-        Node<E> root = createNode(preorder[preStart], null, null, null);
 
-        // Get inorder index of root
-        int inRoot = queue.pop(root.element);
-        int numsLeft = inRoot - inStart;
+    
 
-        // Build left and right subtrees
-        root.left = build(preorder, preStart + 1, preStart + numsLeft,
-                          inorder, inStart, inRoot - 1, queue);
-        root.right = build(preorder, preStart + numsLeft + 1, preEnd,
-                           inorder, inRoot + 1, inEnd, queue);
-
+    public void construct(E[] inorder, E[] preorder) {
+        if (inorder == null || preorder == null || inorder.length != preorder.length) {
+            throw new IllegalArgumentException("Invalid input arrays");
+        }
+        
+        root = buildTree(preorder, 0, preorder.length - 1, 
+                         inorder, 0, inorder.length - 1);
+    }
+    
+    private Node<E> buildTree(E[] preorder, int preStart, int preEnd, E[] inorder, int inStart, int inEnd) {
+        
+        if (preStart > preEnd || inStart > inEnd) {
+            return null;
+        }
+        
+        E rootValue = preorder[preStart];
+        Node<E> root = createNode(rootValue, null, null, null);
+        int rootIndexInInorder = findInorderIndex(inorder, inStart, inEnd, rootValue);
+        int leftSubtreeSize = rootIndexInInorder - inStart;
+        
+    
+        root.setLeft(buildTree(preorder, preStart + 1, preStart + leftSubtreeSize, inorder, inStart, rootIndexInInorder - 1));
+        root.setRight(buildTree(preorder, preStart + leftSubtreeSize + 1, preEnd, inorder, rootIndexInInorder + 1, inEnd));
+        
         return root;
     }
-    */
+    
+    private int findInorderIndex(E[] inorder, int start, int end, E target) {
+        for (int i = start; i <= end; i++) {
+            if (inorder[i].equals(target)) {
+                return i;
+            }
+        }
+        throw new RuntimeException("Element not found in inorder traversal");
+    }
+
+        public ArrayList<ArrayList<E>> rootToLeafPaths() {
+        ArrayList<ArrayList<E>> paths = new ArrayList<>();
+        if (root == null) {
+            return paths;
+        }
+        findPaths(root, new ArrayList<>(), paths);
+        return paths;
+    }
+
+    private void findPaths(Node<E> node, ArrayList<E> currentPath, ArrayList<ArrayList<E>> paths) {
+        if (node == null) {
+            return;
+        }
+        
+        currentPath.add(node.getElement());
+        
+        if (node.getLeft() == null && node.getRight() == null) {
+            paths.add(new ArrayList<>(currentPath));
+        } else {
+            
+            findPaths(node.getLeft(), currentPath, paths);
+            findPaths(node.getRight(), currentPath, paths);
+        }
+
+        currentPath.remove(currentPath.size() - 1);
+    }
 }
 

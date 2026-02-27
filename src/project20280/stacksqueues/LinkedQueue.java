@@ -2,6 +2,7 @@ package project20280.stacksqueues;
 
 import project20280.interfaces.Queue;
 import project20280.list.DoublyLinkedList;
+import project20280.tree.LinkedBinaryTree;
 
 public class LinkedQueue<E> implements Queue<E> {
 
@@ -42,4 +43,5 @@ public class LinkedQueue<E> implements Queue<E> {
     public String toString() {
         return ll.toString();
     }
+
 }

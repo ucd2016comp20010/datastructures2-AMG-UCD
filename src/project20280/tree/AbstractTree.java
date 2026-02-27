@@ -69,15 +69,16 @@ public abstract class AbstractTree<E> implements Tree<E> {
     }
 
     public int height_recursive(Position<E> p) {
-        int h = 0;
-        for (Position<E> pos: children(p)) {
-            h = Math.max(h, height_recursive(pos) + 1);
-        }
+        int h = 0; // base case if p is external
 
+        for (Position<E> c : children(p)){
+            h = Math.max(h, 1 + height_recursive(c));
+        }
+    
         return h;
     }
 
-    public int height() throws IllegalArgumentException {
+    public int height() {
         return height_recursive(root());
     }
 
