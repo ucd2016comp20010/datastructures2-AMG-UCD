@@ -1,6 +1,7 @@
 package project20280.list;
 
 import project20280.interfaces.List;
+import project20280.tree.LinkedBinaryTree.Node;
 
 import java.util.Iterator;
 
@@ -218,7 +219,8 @@ public class SinglyLinkedList<E extends Comparable<E>> implements List<E> {
         //System.out.println(ll);
         SinglyLinkedList<Integer> result = ll.sortedMerged(l2);
         System.out.println(result);
-        result.reverse();
+        System.out.println(result.recurCopy());
+        result.recurseReverse();
         System.out.println(result);
 
     }
@@ -288,5 +290,37 @@ public class SinglyLinkedList<E extends Comparable<E>> implements List<E> {
             tmp = tmp.next;
         }
         return twin;
+    }
+
+    public void recurseReverse() {
+        head = realRecurRev(head);
+    }
+
+    public Node<E> realRecurRev(Node<E> curr) {
+        if (curr == null) return null;
+        if (curr.next == null) return curr;
+
+        Node<E> nextNode = curr.next;
+        curr.next = null;
+        Node<E> reverseRest = realRecurRev(nextNode);
+        nextNode.next = curr;
+
+        return reverseRest;
+    }
+
+    public SinglyLinkedList<E> recurCopy(){
+        SinglyLinkedList<E> copy = new SinglyLinkedList<>();
+        copy.head = head;
+        recurCopyRest(copy.head, head);
+
+        return copy;
+    }
+
+    public Node<E> recurCopyRest(Node<E> curr, Node<E> ogCurr) {
+        if (ogCurr == null){
+            return null;
+        }
+        curr = new Node<E>(ogCurr.element, recurCopyRest(curr.next, ogCurr.next));
+        return curr;
     }
 }

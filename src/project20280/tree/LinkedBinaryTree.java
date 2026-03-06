@@ -60,8 +60,6 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
         }
     }
 
-    // accessor methods (not already implemented in AbstractBinaryTree)
-
     public static void main(String [] args) {
         LinkedBinaryTree<String> bt = new LinkedBinaryTree<>();
         String[] arr = { "A", "B", "C", "D", "E", null, "F", null, null, "G", "H", null, null, null, null };
@@ -77,6 +75,8 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
         LinkedBinaryTree<Integer> bs = new LinkedBinaryTree <>();
         bs.construct(inorder, preorder);
         System.out.println(bs.toBinaryTreeString());
+        System.out.println(bs.diameter(bs.root));
+        bs.printLeavesBase();
     }
 
     protected Node<E> createNode(E e, Node<E> parent, Node<E> left, Node<E> right) {
@@ -85,8 +85,8 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
 
     protected Node<E> validate(Position<E> p) throws IllegalArgumentException {
         if (!(p instanceof Node)) throw new IllegalArgumentException("Not valid position type");
-        Node<E> node = (Node<E>) p; // safe cast
-        if (node.getParent() == node) // our convention for defunct node
+        Node<E> node = (Node<E>) p; 
+        if (node.getParent() == node)
             throw new IllegalArgumentException("p is no longer in the tree");
         return node;
     }
@@ -306,6 +306,7 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
         }
     }
 
+    // DIAMETER ========================================================================================================================
 
 
     static int maxDiameter = 0;
@@ -330,7 +331,7 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
     }
 
 
-    
+    // PREORDER INORDER BUILD ========================================================================================================================
 
     public void construct(E[] inorder, E[] preorder) {
         if (inorder == null || preorder == null || inorder.length != preorder.length) {
@@ -368,6 +369,8 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
         throw new RuntimeException("Element not found in inorder traversal");
     }
 
+// PATH TO LEAVES ================================================================================================================================================================
+
         public ArrayList<ArrayList<E>> rootToLeafPaths() {
         ArrayList<ArrayList<E>> paths = new ArrayList<>();
         if (root == null) {
@@ -394,5 +397,23 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
 
         currentPath.remove(currentPath.size() - 1);
     }
+
+    public void printLeavesBase() {
+        leafNodes(root);
+    }
+
+// RECURSIVE LEAF PRINTER =============================================================================================
+    public void leafNodes(Node<E> r) {
+        if(r!= null) {
+            leafNodes(r.left);
+            leafNodes(r.right);
+ 
+            if(r.left == null && r.right == null) {
+                System.out.println(r.element);
+            }
+        }
+    }
 }
+
+
 
