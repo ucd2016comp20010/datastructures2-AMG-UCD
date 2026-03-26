@@ -1,4 +1,4 @@
-package project20280.priorityqueue.JobScheduling;
+package project20280.priorityqueue;
 
 import java.util.Comparator;
 import java.util.concurrent.*;
