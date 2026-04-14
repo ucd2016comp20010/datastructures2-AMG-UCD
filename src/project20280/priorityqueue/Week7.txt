@@ -68,10 +68,6 @@ Yes
 
 Yes
 
-Q6
-
-Q7
-
 Q8
 public int findKthLargest(int[] nums, int k) {
         PriorityQueue<Integer> pq = new PriorityQueue(Collections.reverseOrder());
@@ -112,5 +108,3 @@ Q9
 
         return ans;
     }
-
-Q10
